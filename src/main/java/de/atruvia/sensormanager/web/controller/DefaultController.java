@@ -11,4 +11,9 @@ public class DefaultController {
         return "index";
     }
 
+    @GetMapping("/tmp")
+    public String getTMP(){
+        return "tmp/load";
+    }
+
 }
