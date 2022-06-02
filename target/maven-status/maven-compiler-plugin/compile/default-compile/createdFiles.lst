@@ -1,0 +1,10 @@
+de\atruvia\sensormanager\app\settings\DatabaseConfiguration.class
+de\atruvia\sensormanager\web\security\Security.class
+de\atruvia\sensormanager\web\settings\Settings.class
+de\atruvia\sensormanager\cache\Cache.class
+de\atruvia\sensormanager\web\utils\Utils.class
+de\atruvia\sensormanager\app\services\EntryService.class
+de\atruvia\sensormanager\Manager.class
+de\atruvia\sensormanager\app\services\sql\DatabaseService.class
+de\atruvia\sensormanager\web\controller\DefaultController.class
+de\atruvia\sensormanager\app\entities\ValueEntity.class

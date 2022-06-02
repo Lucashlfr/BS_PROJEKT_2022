@@ -1,37 +1,49 @@
 <!DOCTYPE html>
 <html lang="de" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Bootstrap 5 Example</title>
+    <title>Projekt BS 2022</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="refresh" content="20">
 
     <link th:href="@{/css/atruvia.css}" rel="stylesheet">
+    <link th:href="@{/css/import/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/import/jquery.dataTables.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/import/datatables.min.css}"/>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src='https://cdn.plot.ly/plotly-2.12.1.min.js'></script>
+
 </head>
 <body>
 
 <div class="atruvia-dbl">
     <nav class="atruvia-navbar">
         <!-- Brand/logo -->
-        <h1 class="atruvia-headline">KSE Helper</h1>
-        <img th:src="@{/img/Atruvia_Logo_Impulsrot_Digital_sRGB.png}" width="200" />
+        <h1 class="atruvia-headline">Projekt BS 2022</h1>
+        <img th:src="@{/img/Atruvia_Logo_Impulsrot_Digital_sRGB.png}" width="200"/>
 
     </nav>
 </div>
 
 <br>
 
-<div class="container">
+<button onclick="resetAxis(0)" style="display: none" id="btn1">Reset 0</button>
+<button onclick="resetAxis(1)" style="display: none " id="btn2">Reset 1</button>
+
+<div class="container" id="load">
 
     <div class="card">
 
         <div class="card-header" style="background-color: #000064 !important;">
-            <section class="text-center"> <img th:src="@{/img/Atruvia_Logo_Impulsrot_Digital_sRGB.png}" class="card-img" style="max-width: 300px"/></section>
+            <section class="text-center">
+                <h1 style="color: white;">Bitte warten...</h1>
+            </section>
         </div>
-        <div class="card-body">
-            <h1>TEXT</h1>
+        <div class="card-body text-center">
+            <span class="spinner-border card-img" style="min-height: 200px; min-width: 200px;"></span>
         </div>
 
 
@@ -39,6 +51,175 @@
 
 </div>
 
+<div class="container-fluid" id="content" style="display: none">
+
+    <div class="card">
+
+        <div class="card-body">
+            <div id='myDiv' style="min-width: 100%"><!-- Plotly chart will be drawn inside this DIV --></div>
+            <div id='myDiv2' style="min-width: 100%"><!-- Plotly chart will be drawn inside this DIV --></div>
+
+        </div>
+    </div>
+
+    <br>
+    <div class="card">
+
+        <div class="card-body">
+            <table id="example" class="display">
+
+                <thead>
+
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Temperature</th>
+                    <th>Pressure</th>
+                    <th>Altitude</th>
+
+                </tr>
+
+                </thead>
+
+                <tbody>
+                <tr th:each="entity:${valueList}">
+
+                    <td th:text="${entity.getDate()}"></td>
+                    <td th:text="${entity.getTemperature()}"></td>
+                    <td th:text="${entity.getPressure()}"></td>
+                    <td th:text="${entity.getAltitude()}"></td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
+<br/>
+
+
+</div>
+
 
 </body>
+
+<script th:src="@{/script/imports/jquery.min.js}"></script>
+<script th:src="@{/script/imports/bootstrap.min.js}"></script>
+
+<script th:src="@{/script/imports/jquery.dataTables.min.js}"></script>
+
+<p id="xIndex" style="display: none" th:text="${xIndex}" th:value="${xIndex}"></p>
+<p id="yTemp" style="display: none" th:text="${yTemp}" th:value="${yTemp}"></p>
+<p id="yPressure" style="display: none" th:text="${yPressure}" th:value="${yPressure}"></p>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            language: {
+                "decimal": ",",
+                "thousands": ".",
+                "infoPostFix": "",
+                "infoFiltered": "(gefiltert aus insgesamt _MAX_ Einträgen)",
+                "loadingRecords": "Bitte warten Sie - Daten werden geladen ...",
+                "lengthMenu": "Anzeigen von _MENU_ Einträgen",
+                "paginate": {
+                    "first": "Erste",
+                    "last": "Letzte",
+                    "next": "Nächste",
+                    "previous": "Zurück"
+                },
+                "processing": "Verarbeitung läuft ...",
+                "search": "Suche:",
+                "searchPlaceholder": "Suchbegriff",
+                "zeroRecords": "Keine Daten! Bitte ändern Sie Ihren Suchbegriff.",
+                "emptyTable": "Keine Einträge zum Anzeigen vorhanden",
+                "aria": {
+                    "sortAscending": ": aktivieren, um Spalte aufsteigend zu sortieren",
+                    "sortDescending": ": aktivieren, um Spalte absteigend zu sortieren"
+                },
+                "info": "Zeigt _START_ bis _END_  von _TOTAL_ Einträgen",
+                "infoEmpty": "Keine Einträge zum Anzeigen vorhanden",
+                "select": {
+                    "rows": {
+                        _: '%d Zeilen ausgewählt',
+                        0: 'Zeile anklicken um auszuwählen',
+                        1: 'Eine Zeile ausgewählt'
+                    }
+                }
+            }
+        });
+
+        let text = $("#xIndex").text();
+        const xRow = text.split(",");
+
+        let yTempText = $("#yTemp").text();
+        const yTemp = yTempText.split(",");
+
+        var temperature = {
+            x: xRow,
+            y: yTemp,
+            type: 'scatter'
+        };
+        var layoutTemp = {
+            responsive: true,
+            autosize: true,
+            color: "red",
+            yaxis: {
+                title: 'Temperatur',
+                titlefont: {size: 30},
+            },
+        };
+
+        var dataTemp = [temperature];
+
+        Plotly.newPlot('myDiv', dataTemp, layoutTemp);
+
+        let yPressureText = $("#yPressure").text();
+        const yPressure = yPressureText.split(",");
+
+        var pressure = {
+            x: xRow,
+            y: yPressure,
+            type: 'scatter'
+        };
+
+        var layoutPressure = {
+            responsive: true,
+            autosize: true,
+            color: "red",
+            xaxis: {
+                autorange: true,
+                showgrid: true,
+                zeroline: true,
+                showline: true,
+            },
+            yaxis: {
+                title: 'Druck',
+                titlefont: {size: 30},
+            },
+        };
+
+        var dataPressure = [pressure];
+        Plotly.newPlot('myDiv2', dataPressure, layoutPressure);
+        //Plotly.newPlot('myDiv3', dataPressure);
+
+        setTimeout(function () {
+            document.getElementById("content").style.display = "block";
+            document.getElementById("load").style.display = "none";
+        }, 200);
+
+        document.getElementById("btn1").click();
+        document.getElementById("btn2").click();
+    });
+
+    function resetAxis(num) {
+        setTimeout(function () {
+            $('a[data-val*="reset"]')[num].click();
+        }, 300);
+
+    }
+
+</script>
+
 </html>
