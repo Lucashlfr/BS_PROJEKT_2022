@@ -1,0 +1,11 @@
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\Manager.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\web\controller\DefaultController.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\app\settings\DatabaseConfiguration.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\web\utils\Utils.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\app\services\sql\DatabaseService.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\web\settings\Settings.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\app\entities\ValueEntity.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\web\security\Security.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\cache\Cache.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\mqtt\MqttClientHandler.java
+C:\workspace\BS_PROJEKT_2022\src\main\java\de\atruvia\sensormanager\app\services\EntryService.java
