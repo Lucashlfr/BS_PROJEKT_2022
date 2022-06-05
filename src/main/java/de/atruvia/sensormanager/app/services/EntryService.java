@@ -58,7 +58,7 @@ public class EntryService {
         try {
             PreparedStatement preparedStatement = databaseService.getConnection().prepareStatement(
 
-                    "SELECT * FROM module_values ORDER BY timestamp DESC LIMIT 100"
+                    "SELECT * FROM module_values LIMIT 50"
 
             );
 
